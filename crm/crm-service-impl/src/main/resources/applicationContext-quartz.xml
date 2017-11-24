@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+
+ <!--创建链接工厂-->
+
+    <!--将Job类放入Spring容器-->
+    <!--<bean id="springQuartzJob" class="com.kaishengit.crm.jobs.SpringQuartzJob"/>-->
+
+    <!--自定义JobDetail-->
+    <!--<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+        <!--&lt;!&ndash;Job类&ndash;&gt;-->
+        <!--<property name="targetObject" ref="springQuartzJob"/>-->
+        <!--&lt;!&ndash;job类中的任务方法&ndash;&gt;-->
+        <!--<property name="targetMethod" value="doSomething"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="quartzJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">-->
+        <!--&lt;!&ndash;定义为循环任务&ndash;&gt;-->
+        <!--<property name="durability" value="true"/>-->
+        <!--&lt;!&ndash;Quartz Job的实现类完全限定名&ndash;&gt;-->
+        <!--<property name="jobClass" value="com.kaishengit.crm.jobs.MyQuartzJob"/>-->
+        <!--<property name="jobDataAsMap">-->
+            <!--<map>-->
+                <!--<entry key="accountId" value="9000"/>-->
+            <!--</map>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash;定义Trigger&ndash;&gt;-->
+    <!--<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+        <!--&lt;!&ndash;定义JobDetail&ndash;&gt;-->
+        <!--<property name="jobDetail" ref="quartzJob"/>-->
+        <!--&lt;!&ndash;Cron表达式&ndash;&gt;-->
+        <!--<property name="cronExpression" value="0/30 * * * * ? *"/>-->
+    <!--</bean>-->
+
+    <!--定义调度器-->
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <!--配置数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--事务管理器-->
+        <property name="transactionManager" ref="transactionManager"/>
+        <!--quartz.properties文件的位置-->
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <!--是否覆盖数据库中已有的任务-->
+        <property name="overwriteExistingJobs" value="true"/>
+        <property name="triggers">
+            <list>
+                <!--<ref bean="cronTrigger"></ref>-->
+            </list>
+        </property>
+    </bean>
+
+
+</beans>

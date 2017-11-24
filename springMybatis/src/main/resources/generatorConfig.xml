@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+    <!--获得数据库链接的jar包存放位置-->
+    <classPathEntry location="C:\study\jar\mysql-connector-java-5.1.6.jar"/>
+
+    <context id="myConfig" targetRuntime="MyBatis3">
+        <!--设置不生成注释-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+        <!--配置数据链接信息-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql:///test?useSSL=false"
+                        userId="root"  password="rootroot"/>
+        <!--设置生成的实体类的存放位置-->
+        <javaModelGenerator targetPackage="com.kaishengit.entity" targetProject="src/main/java"/>
+        <!--设置xml配置文件的存放位置-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+        <!--设置mapper接口的存放位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.kaishengit.mapper" targetProject="src/main/java"/>
+        <!--以去t_ 首字母大写的形式创建实体类-->
+        <table tableName="t_book" domainObjectName="Book" enableSelectByExample="true"/>
+    </context>
+</generatorConfiguration>
