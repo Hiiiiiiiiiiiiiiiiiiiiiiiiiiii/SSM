@@ -91,8 +91,19 @@
                                 <td><span class="name-avatar" style="<c:if test="${customer.sex eq '女士'}"> background-color: pink</c:if>">${fn:substring(customer.customerName, 0, 1)}</span></td>
                                 <td>${customer.customerName}</td>
                                 <td>${customer.sex}</td>
-                                <td>${customer.jobTitle}</td>
-                                <td><fmt:formatDate value="${customer.lastChatTime}"/></td>
+                                <c:if test="${empty customer.jobTitle}">
+                                    <td style="color: #8aa4af">暂无数据</td>
+                                </c:if>
+                                <c:if test="${not empty customer.jobTitle}">
+                                    <td>${customer.jobTitle}</td>
+                                </c:if>
+
+                                <c:if test="${empty customer.lastChatTime}">
+                                    <td style="color: #8aa4af">暂无数据</td>
+                                </c:if>
+                                <c:if test="${not empty customer.lastChatTime}">
+                                    <td><fmt:formatDate value="${customer.lastChatTime}"/></td>
+                                </c:if>
                                 <td class="star">${customer.level}</td>
                                 <td><i class="fa fa-phone"></i> ${customer.customPhone} <br></td>
                             </tr>

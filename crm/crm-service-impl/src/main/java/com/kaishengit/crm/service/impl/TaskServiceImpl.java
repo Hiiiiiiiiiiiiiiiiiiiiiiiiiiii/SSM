@@ -92,9 +92,6 @@ public class TaskServiceImpl implements TaskService {
                     .append(dateTime.getMonthOfYear())
                     .append(" ? ")
                     .append(dateTime.getYear());
-
-//            logger.info("CRON EX: {}" ,cron.toString());
-
             ScheduleBuilder scheduleBuilder =
                     CronScheduleBuilder.cronSchedule(cron.toString()); //!!!! Cron表达式
             Trigger trigger = TriggerBuilder.newTrigger()
@@ -108,21 +105,15 @@ public class TaskServiceImpl implements TaskService {
             } catch (Exception ex) {
                 throw new ServiceException(ex, "添加定时任务异常");
             }
-
-
         }
-
-
     }
 
     @Override
     public void changeState(Integer taskId) {
         //根据taskId查询对象
         Task task = taskMapper.selectByPrimaryKey(taskId);
-        System.out.println(task.getDone()+"***************************************");
         if(task.getDone()==0){
             task.setDone((byte)1);
-            System.out.println("********************************");
         }else{
             task.setDone((byte)0);
         }
@@ -142,6 +133,20 @@ public class TaskServiceImpl implements TaskService {
                 throw new ServiceException(e,"删除定时任务异常");
             }
         }
+    }
 
+    @Override
+    public List<Task> findByCustomerId(Integer customerId) {
+        TaskExample taskExample = new TaskExample();
+        taskExample.createCriteria().andCustIdEqualTo(customerId);
+        return taskMapper.selectByExample(taskExample);
+    }
+
+    @Override
+    public List<Task> findBySaleId(Integer saleChanceId) {
+
+        TaskExample taskExample = new TaskExample();
+        taskExample.createCriteria().andSaleIdEqualTo(saleChanceId);
+        return taskMapper.selectByExample(taskExample);
     }
 }

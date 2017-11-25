@@ -37,13 +37,13 @@
                     <h3 class="box-title">新增待办任务</h3>
 
                     <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool">
+                        <a href="/todo/${accountId}" type="button" class="btn btn-box-tool">
                             <i class="fa fa-plus"></i> 返回列表
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <div class="box-body">
-                    <form action="/todo/${accountId}/add" method="post" id="todoFrom">
+                    <form action="/todo/add?accountId=${accountId}&&customerId=${customerId}&&saleChanceId=${saleChanceId}" method="post" id="todoFrom">
                         <div class="form-group">
                             <label>任务名称</label>
                             <input type="text" class="form-control" name="title">
@@ -76,6 +76,7 @@
 </div>
 <!-- ./wrapper -->
 <jsp:include page="../include/script.jsp"/>
+<script src="/static/plugins/validate/jquery.validate.min.js"></script>
 <script>
     $(function () {
         var picker = $('#datepicker').datepicker({
@@ -100,7 +101,34 @@
         });
         $("#addBtn").click(function(){
             $("#todoFrom").submit();
-        })
+        });
+        $("#todoFrom").validate({
+            errorClass:"text-danger",
+            errorElement:"span",
+            rules:{
+                title:{
+                    required:true
+                },
+                finishTime:{
+                    required:true
+                },
+                remindTime:{
+                    required:true
+                }
+
+            },
+            messages:{
+                title:{
+                    required:"请输入任务名称"
+                },
+                finishTime:{
+                    required:"请选择完成日期"
+                },
+                remindTime:{
+                    required:"请选择提醒日期"
+                }
+            }
+        });
     });
 </script>
 </body>

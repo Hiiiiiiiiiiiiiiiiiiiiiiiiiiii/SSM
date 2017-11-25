@@ -93,11 +93,40 @@
 </div>
 <!-- ./wrapper -->
 <jsp:include page="../include/script.jsp"/>
+<script src="/static/plugins/validate/jquery.validate.min.js"></script>
 <script>
     (function(){
         $("#saveBtn").click(function(){
             $("#addForm").submit();
+        });
+        $("#addForm").validate({
+            errorClass:"text-danger",
+            errorElement:"span",
+            rules:{
+                name:{
+                    required:true
+                },
+                worth:{
+                    required:true,
+                    number:true,
+                    min:1
+                }
+            },
+            messages:{
+                name:{
+                    required:"请输入姓名"
+                },
+                worth:{
+                    required:"请输入价值",
+                    number:"请输入数字",
+                    rangelength:"手机号格式不正确",
+                    min:"请输入大于1的数字"
+                }
+            }
         })
+
+
+
     })()
 </script>
 

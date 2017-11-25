@@ -170,7 +170,6 @@ public class CustomerImpl implements CustomerService {
             }else{
                 time = "2017-"+i+"-%";
             }
-            System.out.println(time+"******************************");
             Map<String ,Object> map = customerMapper.findCustomerCountByTime(time);
             if(map!=null&&!map.isEmpty()){
                 map.put("month",i+"月");

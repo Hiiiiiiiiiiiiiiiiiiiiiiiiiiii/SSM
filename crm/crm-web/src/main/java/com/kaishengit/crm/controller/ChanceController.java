@@ -1,13 +1,7 @@
 package com.kaishengit.crm.controller;
 
-import com.kaishengit.crm.entity.Account;
-import com.kaishengit.crm.entity.Customer;
-import com.kaishengit.crm.entity.SaleChance;
-import com.kaishengit.crm.entity.SaleChanceRecord;
-import com.kaishengit.crm.service.AccountService;
-import com.kaishengit.crm.service.CustomerService;
-import com.kaishengit.crm.service.SaleChanceRecordService;
-import com.kaishengit.crm.service.SaleChanceService;
+import com.kaishengit.crm.entity.*;
+import com.kaishengit.crm.service.*;
 import com.kaishengit.crm.service.impl.SaleChanceRecordServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +24,8 @@ public class ChanceController {
     CustomerService customerService;
     @Autowired
     SaleChanceRecordService saleChanceRecordService;
+    @Autowired
+    TaskService taskService;
     /**
      * 跳转到我的机会页面
      * @param accountId
@@ -88,6 +84,8 @@ public class ChanceController {
         List<SaleChanceRecord> saleChanceRecordList = saleChanceRecordService.findBySale_id(saleChanceId);
         //获取所有的跟进进度
         List<String> progressList = saleChanceService.findAllProgress();
+        List<Task> taskList = taskService.findBySaleId(saleChanceId);
+        model.addAttribute("taskList",taskList);
         model.addAttribute("progressList",progressList);
         model.addAttribute("saleChance",saleChance);
         model.addAttribute("saleChanceRecordList",saleChanceRecordList);

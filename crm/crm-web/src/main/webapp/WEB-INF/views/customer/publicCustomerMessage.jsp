@@ -29,7 +29,7 @@
 
     <!-- 左侧菜单栏 -->
     <jsp:include page="../include/left.jsp">
-        <jsp:param name="menu" value="customer_my"/>
+        <jsp:param name="menu" value="customer_public"/>
     </jsp:include>
 
     <!-- =============================================== -->
@@ -44,10 +44,7 @@
                     <h3 class="box-title">客户资料</h3>
                     <div class="box-tools">
                         <a href="/customer/my" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> 返回列表</a>
-                        <a href="/customer/${customer.id}/change" class="btn bg-purple btn-sm"><i class="fa fa-pencil"></i> 编辑</a>
-                        <button class="btn bg-orange btn-sm" id="give_other"><i class="fa fa-exchange"></i> 转交他人</button>
-                        <button class="btn bg-maroon btn-sm" id="publicBtn"><i class="fa fa-recycle"></i> 放入公海</button>
-                        <a href="/customer/${customer.id}/delete" class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i> 删除</a>
+                        <button class="btn btn-success btn-sm" id="takeBtn"><i class="fa fa-recycle"></i> 转到我的客户</button>
                     </div>
                 </div>
                 <div class="box-body no-padding">
@@ -186,6 +183,9 @@
         $("#addTodo").click(function(){
             var customerId = ${customer.id};
             window.location.href = "/todo/add?customerId="+customerId;
+        });
+        $("#takeBtn").click(function(){
+            window.location.href = "/customer/take/${customer.id}";
         })
     })()
 

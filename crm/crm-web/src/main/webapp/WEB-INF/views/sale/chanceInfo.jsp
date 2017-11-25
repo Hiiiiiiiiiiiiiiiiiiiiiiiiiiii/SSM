@@ -173,17 +173,12 @@
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title">日程安排</h3>
+                            <small><button id="addTodo" class="btn btn-success btn-xs" style="margin-bottom: 8px"><i class="fa fa-plus"></i></button></small>
                         </div>
                         <div class="box-body">
-
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">相关资料</h3>
-                        </div>
-                        <div class="box-body">
-
+                            <c:forEach items="${taskList}" var="task">
+                                <a href="/todo/${task.accountId}"><div class="bg-success" style="padding-left: 180px">${task.title}</div></a>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>
@@ -262,6 +257,9 @@
         $("#saveProgress").click(function () {
             $("#updateProgressForm").submit();
         });
+        $("#addTodo").click(function(){
+            window.location.href = "/todo/add?saleChanceId="+${saleChance.id};
+        })
     })()
 </script>
 <!-- ./wrapper -->

@@ -9,7 +9,8 @@
     <context:component-scan base-package="com.kaishengit.crm.controller">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
-
+    <!--读取配置文件-->
+    <context:property-placeholder location="classpath:configs.properties"/>
     <!---->
     <mvc:annotation-driven/>
     <!--放行静态资源-->

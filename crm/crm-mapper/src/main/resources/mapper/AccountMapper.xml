@@ -277,8 +277,11 @@
 
     <select id="countByDeptId" resultType="java.lang.Long">
         select count(*) from t_account
+
+        inner join account_dept on t_account.user_id = account_dept.user_id
+
         <if test="deptId != null and deptId != ''">
-            inner join account_dept on t_account.user_id = account_dept.user_id
+
             where account_dept.dept_id = #{deptId}
         </if>
     </select>

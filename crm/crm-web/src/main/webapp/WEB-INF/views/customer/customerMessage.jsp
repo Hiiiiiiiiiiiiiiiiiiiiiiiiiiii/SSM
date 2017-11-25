@@ -89,6 +89,9 @@
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title">跟进记录</h3>
+                            <c:if test="${empty saleChanceList}">
+                                <div class="bg-danger"style="padding-left: 380px;color: red">暂无跟进记录</div>
+                            </c:if>
                             <c:forEach items="${saleChanceList}" var="saleChance">
                                 <div class="bg-success"><a href="/chance/${saleChance.id}/info" style="padding-left: 380px">${saleChance.name}</a></div>
                             </c:forEach>
@@ -101,15 +104,17 @@
                 <div class="col-md-4">
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title">日程安排</h3>
-                        </div>
-                        <div class="box-body">
 
-                        </div>
-                    </div>
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">相关资料</h3>
+                            <div>
+                                <h3 class="box-title">日程安排</h3>
+                                <button id="addTodo" class="btn btn-success btn-xs" style="margin-top: -8px"><i class="fa fa-plus"></i></button>
+                            </div>
+                            <c:if test="${empty taskList}">
+                                <div class="bg-danger"style="padding-left: 160px;color: red">暂无日程安排</div>
+                            </c:if>
+                            <c:forEach items="${taskList}" var="task">
+                                <div class="bg-success"><a href="/todo/${accountList.get(0).userId}" style="margin-left: 160px">${task.title}</a></div>
+                            </c:forEach>
                         </div>
                         <div class="box-body">
 
@@ -178,6 +183,10 @@
                 window.location.href = "/customer/my/"+customerId+"/public";
             });
         });
+        $("#addTodo").click(function(){
+            var customerId = ${customer.id};
+            window.location.href = "/todo/add?customerId="+customerId;
+        })
     })()
 
 </script>

@@ -119,7 +119,7 @@
         </c:if>
         $(".customer").click(function(){
             var customerId = $(this).attr("val")
-            window.location.href = "/customer/"+customerId+"/customerMessage";
+            window.location.href = "/customer/"+customerId+"/publicCustomerMessage";
         })
     })()
 </script>

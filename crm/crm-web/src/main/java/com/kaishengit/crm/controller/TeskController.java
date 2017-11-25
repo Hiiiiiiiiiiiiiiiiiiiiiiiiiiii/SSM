@@ -6,11 +6,9 @@ import com.kaishengit.crm.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,14 +27,21 @@ public class TeskController {
         model.addAttribute("accountId",accountId);
         return "/task/task";
     }
-    @GetMapping("/{accountId}/add")
-    public String addTodo(@PathVariable Integer accountId,Model model){
-
-        model.addAttribute("accountId",accountId);
+    @GetMapping("/add")
+    public String addTodo(Model model, @RequestParam(required = false) Integer customerId,
+                          @RequestParam(required = false) Integer saleChanceId,
+                          HttpSession session){
+        model.addAttribute("customerId",customerId);
+        Account account = (Account) session.getAttribute("account");
+        model.addAttribute("accountId",account.getUserId());
+        model.addAttribute("saleChanceId",saleChanceId);
         return "/task/newTask";
     }
-    @PostMapping("/{accountId}/add")
-    public String addTodo(@PathVariable Integer accountId,String finishTime,String remindTime,String title){
+    @PostMapping("/add")
+    public String addTodo(@RequestParam(required=false) Integer customerId,
+                          @RequestParam(required=false) Integer accountId,
+                          @RequestParam(required = false) Integer saleChanceId,
+                          String finishTime, String remindTime, String title){
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm");
         Date finishTimes = null;
@@ -48,12 +53,27 @@ public class TeskController {
             e.printStackTrace();
         }
         Task task = new Task();
+        if(accountId!=null){
+            task.setAccountId(accountId);
+        }
+        if(customerId!=null){
+            task.setCustId(customerId);
+        }
+        if(saleChanceId!=null){
+            task.setSaleId(saleChanceId);
+        }
         task.setTitle(title);
         task.setFinishTime(finishTimes);
         task.setRemindTime(remindTimes);
-        task.setAccountId(accountId);
         taskService.save(task);
-        return "redirect:/todo/"+accountId;
+        String url = "redirect:/todo/"+accountId;
+        if(customerId!=null){
+            url = "redirect:/customer/"+customerId+"/customerMessage";
+        }
+        if(saleChanceId!=null){
+            url = "redirect:/chance/"+saleChanceId+"/info";
+        }
+        return url;
     }
     @GetMapping("{taskId}/change/{accountId}")
     public String changeStateOfDone(@PathVariable Integer taskId,@PathVariable Integer accountId){

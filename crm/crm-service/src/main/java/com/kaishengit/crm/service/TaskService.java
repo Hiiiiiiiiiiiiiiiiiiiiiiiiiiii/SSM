@@ -1,6 +1,7 @@
 package com.kaishengit.crm.service;
 
 import com.kaishengit.crm.entity.Account;
+import com.kaishengit.crm.entity.Customer;
 import com.kaishengit.crm.entity.Task;
 
 import java.util.List;
@@ -13,4 +14,8 @@ public interface TaskService {
     void changeState(Integer taskId);
 
     void deleteByKey(Integer taskId);
+
+    List<Task> findByCustomerId(Integer customerId);
+
+    List<Task> findBySaleId(Integer saleChanceId);
 }

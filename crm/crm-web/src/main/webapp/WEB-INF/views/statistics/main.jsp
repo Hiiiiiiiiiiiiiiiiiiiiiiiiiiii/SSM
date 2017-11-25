@@ -9,19 +9,19 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!--引入css-->
-    <jsp:include page="include/css.jsp"/>
+    <jsp:include page="../include/css.jsp"/>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
 <div class="wrapper">
 
     <!-- 顶部导航栏部分 -->
-   <jsp:include page="include/top.jsp"/>
+   <jsp:include page="../include/top.jsp"/>
     <!-- =============================================== -->
 <%--class="active"--%>
     <!-- 左侧菜单栏 -->
-    <jsp:include page="include/left.jsp">
-        <jsp:param name="menu" value="home"/>
+    <jsp:include page="../include/left.jsp">
+        <jsp:param name="menu" value="main"/>
     </jsp:include>
     <!-- =============================================== -->
 
@@ -33,11 +33,11 @@
     <!-- /.content-wrapper -->
 
     <!-- 底部 -->
-    <jsp:include page="include/footer.jsp"/>
+    <jsp:include page="../include/footer.jsp"/>
 
 </div>
 <!-- ./wrapper -->
-<jsp:include page="include/script.jsp"/>
+<jsp:include page="../include/script.jsp"/>
 <script src="/static/plugins/echarts/echarts.min.js"></script>
 <script type="text/javascript">
     (function(){

@@ -63,7 +63,7 @@ public class SaleChanceRecordServiceImpl implements SaleChanceRecordService{
         saleChanceRecordMapper.insertSelective(saleChanceRecord);
         //2.更新客户的跟进时间
         SaleChance saleChance = saleChanceMapper.selectByPrimaryKey(saleChanceId);
-        Customer customer = customerMapper.selectByPrimaryKey(saleChance.getAccountId());
+        Customer customer = customerMapper.selectByPrimaryKey(saleChance.getCustId());
         customer.setLastChatTime(saleChanceRecord.getCreateTime());
         customerMapper.updateByPrimaryKey(customer);
     }

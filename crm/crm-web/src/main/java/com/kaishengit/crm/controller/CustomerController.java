@@ -3,9 +3,11 @@ package com.kaishengit.crm.controller;
 import com.kaishengit.crm.entity.Account;
 import com.kaishengit.crm.entity.Customer;
 import com.kaishengit.crm.entity.SaleChance;
+import com.kaishengit.crm.entity.Task;
 import com.kaishengit.crm.service.AccountService;
 import com.kaishengit.crm.service.CustomerService;
 import com.kaishengit.crm.service.SaleChanceService;
+import com.kaishengit.crm.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,8 @@ public class CustomerController extends EnterPersonController{
     AccountService accountService;
     @Autowired
     SaleChanceService saleChanceService;
+    @Autowired
+    TaskService taskService;
 
     public Map getCustomerMessage(HttpSession session){
         //获取当前登录的用户信息
@@ -72,9 +76,12 @@ public class CustomerController extends EnterPersonController{
         Customer customer = customerService.findByCustomerId(customerId);
         //获取所有机会
         List<SaleChance> saleChanceList = saleChanceService.findByCustId(customerId);
+        //查找所有的日程安排
+        List<Task> taskList = taskService.findByCustomerId(customerId);
         model.addAttribute("customer",customer);
         model.addAttribute("accountList",accountList);
         model.addAttribute("saleChanceList",saleChanceList);
+        model.addAttribute("taskList",taskList);
         return "customer/customerMessage";
     }
 
@@ -184,7 +191,6 @@ public class CustomerController extends EnterPersonController{
         model.addAttribute("customerList",customerList);
         return "/customer/publicCustomer";
     }
-
     /**
      * 把客户放入公海
      * @return
@@ -197,7 +203,31 @@ public class CustomerController extends EnterPersonController{
         redirectAttributes.addFlashAttribute("message","放入公海成功!!");
         return "redirect:/customer/my";
     }
-
+    @GetMapping("/{customerId}/publicCustomerMessage")
+    public String toPublicMessage(@PathVariable Integer customerId,Model model){
+        //查找所有用户
+        List<Account> accountList = accountService.findAllAccount();
+        //通过customerId来查找
+        Customer customer = customerService.findByCustomerId(customerId);
+        //获取所有机会
+        List<SaleChance> saleChanceList = saleChanceService.findByCustId(customerId);
+        //查找所有的日程安排
+        List<Task> taskList = taskService.findByCustomerId(customerId);
+        model.addAttribute("customer",customer);
+        model.addAttribute("accountList",accountList);
+        model.addAttribute("saleChanceList",saleChanceList);
+        model.addAttribute("taskList",taskList);
+        return "customer/publicCustomerMessage";
+    }
+    @GetMapping("/take/{customerId}")
+    public String take(@PathVariable Integer customerId,HttpSession session){
+        Account account = (Account) session.getAttribute("account");
+        Customer customer = customerService.findByCustomerId(customerId);
+        System.out.println(account.getUserId());
+        customer.setAccountId(account.getUserId());
+        customerService.update(customer);
+        return "redirect:/customer/my";
+    }
     /**
      * 将客户信息导出为xls文件
      * @return

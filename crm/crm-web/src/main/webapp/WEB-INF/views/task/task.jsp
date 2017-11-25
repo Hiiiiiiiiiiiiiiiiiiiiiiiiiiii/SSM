@@ -11,6 +11,7 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <jsp:include page="../include/css.jsp"/>
+    <link rel="stylesheet" href="/static/plugins/layer/mobile/need/layer.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
@@ -53,19 +54,26 @@
                                     <input type="checkbox" rel="${task.id}" class="checked" ${task.done eq 1 ? 'checked':''}>
                                     <span class="text">${task.title}</span>
                                     <c:if test="${not empty task.custId}">
-                                        <a href=""><i class="fa fa-user-o"></i>${task.customer.customerName}</a>
+                                        <a href="/customer/${task.customer.id}/customerMessage"><i class="fa fa-user-o"></i>${task.customer.customerName}</a>
                                     </c:if>
                                     <c:if test="${not empty task.saleId}">
                                         <a href=""><i class="fa fa-money"></i>${task.saleChance.name}</a>
                                     </c:if>
 
                                     <small class="label ${task.overTime ? 'label-danger' : 'label-success'}"><i class="fa fa-clock-o"></i><fmt:formatDate value="${task.finishTime}"/></small>
+                                    <small class="label label-info"><i class="fa fa-clock-o"></i><fmt:formatDate value="${task.remindTime}"/></small>
                                     <div class="tools">
-                                        <i class="fa fa-edit ${task.done eq 1 ? 'hidden':''}"rel="${task.id}"></i>
                                         <a href="javascript:;" class="delete" rel="${task.id}"><i class="fa fa-trash-o"></i></a>
                                     </div>
                                 </li>
                         </c:forEach>
+                            <div style="float: right">
+                                完成时间:　<label class="label-success">　　</label>　
+                                提醒时间:　<label class="label-info">　　</label>　
+                                未完成任务:　<label class="label-danger">　　</label>
+                            </div>
+
+                </div>
                     </ul>
                 </div>
                 <!-- /.box-body -->
@@ -90,7 +98,7 @@
     (function(){
         $("#addBtn").click(function(){
             var accountId = ${accountId};
-            window.location.href = "/todo/"+accountId+"/add";
+            window.location.href = "/todo/add";
         });
         $(".checked").click(function(){
             var taskId = $(this).attr("rel");
@@ -107,6 +115,7 @@
                 window.location.href = "/todo/"+taskId+"/delete/"+${accountId};
             });
         });
+
     })()
 </script>
 </body>

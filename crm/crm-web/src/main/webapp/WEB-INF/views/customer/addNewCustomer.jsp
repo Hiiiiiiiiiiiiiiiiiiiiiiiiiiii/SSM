@@ -79,7 +79,6 @@
                                 <c:forEach items="${sourceList}" var="source">
                                     <option value="${source}">${source}</option>
                                 </c:forEach>
-                                <option value="其他">其他</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -128,7 +127,9 @@
                     required:true
                 },
                 customPhone:{
-                    required:true
+                    required:true,
+                    number:true,
+                    rangelength:[11,11]
                 }
             },
             messages:{
@@ -136,7 +137,9 @@
                     required:"请输入姓名"
                 },
                 customPhone:{
-                    required:"请输入联系方式"
+                    required:"请输入联系方式",
+                    number:"请输入数字",
+                    rangelength:"手机号格式不正确"
                 }
             }
         });

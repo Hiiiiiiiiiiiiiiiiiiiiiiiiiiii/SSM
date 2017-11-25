@@ -14,15 +14,13 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="static/dist/css/AdminLTE.min.css">
 
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
-         folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="static/dist/css/skins/_all-skins.min.css">
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
+
     <script src="https://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <%--icheck--%>
+    <link href="/static/plugins/iCheck/square/blue.css" rel="stylesheet">
+
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -47,8 +45,8 @@
             <div class="row">
                 <div class="col-xs-8">
                     <div class="checkbox icheck">
-                        <label>
-                            <a href="#">忘记密码</a><br>
+                        <label style="padding-top:-10px ">
+                            <input type="checkbox">　记住密码
                         </label>
                     </div>
                 </div>
@@ -71,5 +69,18 @@
 <script src="/static/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<%--icheck.js--%>
+<script src="/static/plugins/iCheck/icheck.js"></script>
+<script>
+
+    $(document).ready(function(){
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+
+</script>
 </body>
 </html>

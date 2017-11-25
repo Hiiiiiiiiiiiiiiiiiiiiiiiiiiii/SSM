@@ -10,8 +10,10 @@ import com.kaishengit.crm.mapper.AccountDeptMapper;
 import com.kaishengit.crm.mapper.AccountMapper;
 import com.kaishengit.crm.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.security.provider.MD5;
 
 
 import java.util.Date;
@@ -20,7 +22,6 @@ import java.util.Map;
 
 @Service
 public class AccountServiceImpl implements AccountService {
-
     @Autowired
     private AccountMapper accountMapper;
     @Autowired
@@ -49,11 +50,20 @@ public class AccountServiceImpl implements AccountService {
         return accountMapper.selectByExample(new AccountExample());
     }
 
+    /**
+     * 登录验证
+     * @param mobile
+     * @param password
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Account login(String mobile, String password) throws AuthenticationException{
         AccountExample accountExample = new AccountExample();
+        //根据手机号查找用户
         accountExample.createCriteria().andUserMobileEqualTo(mobile);
         List<Account> accountList = accountMapper.selectByExample(accountExample);
+
         Account account = null;
         if(accountList!=null&&!accountList.isEmpty()){
             account = accountList.get(0);
@@ -97,9 +107,6 @@ public class AccountServiceImpl implements AccountService {
         accountExample1.createCriteria().andUserNameEqualTo(userName);
         List<Account> accountList1 = accountMapper.selectByExample(accountExample1);
 
-        /**
-         *
-         */
         //3.添加关联关系
         for(Integer dept : deptId){
             AccountDeptKey accountDeptKey = new AccountDeptKey();

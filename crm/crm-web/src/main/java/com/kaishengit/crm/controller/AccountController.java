@@ -2,19 +2,16 @@ package com.kaishengit.crm.controller;
 
 import com.kaishengit.crm.entity.Account;
 import com.kaishengit.crm.entity.Dept;
-import com.kaishengit.crm.entity.SaleChanceRecord;
 import com.kaishengit.crm.exception.AuthenticationException;
 import com.kaishengit.crm.exception.ServiceException;
 import com.kaishengit.crm.service.AccountService;
-import com.kaishengit.crm.service.CustomerService;
 import com.kaishengit.crm.service.DeptService;
-import com.kaishengit.crm.service.SaleChanceRecordService;
 import com.kaishengit.web.result.AjaxResult;
 import com.kaishengit.web.result.DataTablesResult;
 import com.kaishengit.weixin.WeixinUtil;
-import com.kaishengit.weixin.exception.WeiXinException;
-import com.mysql.fabric.xmlrpc.base.Data;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -24,10 +21,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,15 +32,14 @@ import java.util.Map;
 
 @Controller
 public class AccountController {
-
+    @Value("${user.password.salt}")
+    private String salt;
     @Autowired
     AccountService accountService;
     @Autowired
     DeptService deptService;
-    @Autowired
-    SaleChanceRecordService saleChanceRecordService;
-    @Autowired
-    CustomerService customerService;
+
+
     @GetMapping("/login")
     public String UserLogin() {
         return "login";
@@ -61,7 +57,8 @@ public class AccountController {
 //        校验账户以及密码
         Account account = null;
         try {
-            account = accountService.login(mobile, password);
+            String saltPassword = DigestUtils.md5Hex(password+salt);
+            account = accountService.login(mobile, saltPassword);
         } catch (AuthenticationException message) {
             redirectAttributes.addFlashAttribute("message", "账号或者密码错误请重新登录");
             return "redirect:/login";
@@ -77,15 +74,7 @@ public class AccountController {
      */
     @GetMapping("/home")
     public String home(Model model) {
-        Date date = null;
 
-        //查询各个进程的数量并封装到一个List中
-        //梯形表(业务进度)todo 可根据时间再做拓展
-        List<Map<String,Object>> chanceList  = saleChanceRecordService.findAllChanceAddToList(date);
-        //折线图(每月新增客户次数)
-        List<Map<String,Object>> customerList  = customerService.findCustomerCountByTime();
-        model.addAttribute("customerList",customerList);
-        model.addAttribute("chanceList",chanceList);
         return "home";
     }
 
@@ -136,10 +125,11 @@ public class AccountController {
         map.put("accountName", keyword);
         map.put("deptId", deptId);
 
-
         List<Account> accountList = accountService.pageForAccount(map);
         Long total = accountService.accountCountByDeptId(deptId);
+
         return new DataTablesResult<>(draw, total.intValue(), accountList);
+
     }
 
     /**
